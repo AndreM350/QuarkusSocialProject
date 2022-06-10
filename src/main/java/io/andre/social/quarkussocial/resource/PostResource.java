@@ -1,13 +1,11 @@
-package io.andre.social.quarkussocial.rest;
+package io.andre.social.quarkussocial.resource;
 
 import io.andre.social.quarkussocial.domain.model.Post;
 import io.andre.social.quarkussocial.domain.model.User;
 import io.andre.social.quarkussocial.domain.repository.PostRepository;
 import io.andre.social.quarkussocial.domain.repository.UserRepository;
-import io.andre.social.quarkussocial.rest.dto.CreatePostRequest;
-import io.andre.social.quarkussocial.rest.dto.PostResponse;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.logging.Log;
+import io.andre.social.quarkussocial.domain.model.dto.CreatePostRequest;
+import io.andre.social.quarkussocial.domain.model.dto.PostResponse;
 import io.quarkus.panache.common.Sort;
 
 import javax.inject.Inject;
@@ -16,7 +14,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Consumes(MediaType.APPLICATION_JSON)

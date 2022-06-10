@@ -2,6 +2,7 @@ package io.andre.social.quarkussocial.domain.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 @Data
+@Builder
 public class User {
 
     @Id

@@ -1,8 +1,6 @@
-package io.andre.social.quarkussocial.rest.dto;
+package io.andre.social.quarkussocial.domain.model.dto;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

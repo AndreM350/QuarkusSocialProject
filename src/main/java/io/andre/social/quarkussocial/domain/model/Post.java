@@ -1,5 +1,6 @@
 package io.andre.social.quarkussocial.domain.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "posts")
+@Builder
 public class Post {
 
     @Id

@@ -1,9 +1,9 @@
-package io.andre.social.quarkussocial.rest;
+package io.andre.social.quarkussocial.resource;
 
 import io.andre.social.quarkussocial.domain.model.User;
 import io.andre.social.quarkussocial.domain.repository.UserRepository;
-import io.andre.social.quarkussocial.rest.dto.CreateUserRequest;
-import io.andre.social.quarkussocial.rest.dto.ResponseError;
+import io.andre.social.quarkussocial.domain.model.dto.CreateUserRequest;
+import io.andre.social.quarkussocial.domain.model.dto.ResponseError;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import org.jboss.logging.Logger;
 
@@ -43,9 +43,11 @@ public class UserResource {
                     .withStatusCode(ResponseError.UNPROCESSABLE_ENTITY_STATUS);
         }
 
-        User user = new User();
-        user.setName(userRequest.getName());
-        user.setAge(userRequest.getAge());
+
+        var user = User.builder()
+                .name(userRequest.getName())
+                .age(userRequest.getAge())
+                .build();
 
         userRepository.persist(user);
         //return Response.status(201).build();

@@ -1,4 +1,4 @@
-package io.andre.social.quarkussocial.rest.dto;
+package io.andre.social.quarkussocial.domain.model.dto;
 
 public class FieldError {
 

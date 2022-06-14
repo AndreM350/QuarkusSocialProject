@@ -15,3 +15,11 @@ CREATE TABLE POSTS (
     dateTime timestamp,
     user_id bigint not null references USERS(id)
 );
+
+create table FOLLOWERS(
+
+                          id bigint auto_increment not null primary key,
+                          user_id bigint not null references USERS(id),
+                          follower_id bigint not null references USERS(id)
+
+);

@@ -7,6 +7,7 @@ import io.andre.social.quarkussocial.domain.repository.UserRepository;
 import io.andre.social.quarkussocial.domain.model.dto.CreatePostRequest;
 import io.andre.social.quarkussocial.domain.model.dto.PostResponse;
 import io.quarkus.panache.common.Sort;
+import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
 public class PostResource {
 
     @Inject
+    Logger log;
+
+    @Inject
     UserRepository userRepository;
 
     @Inject
@@ -30,13 +34,15 @@ public class PostResource {
     @POST
     @Transactional
     public Response savePost(@PathParam("userId") Long userId, CreatePostRequest request){
-        System.out.println("Método savePost foi acionado");
+
 
 
         User user = userRepository.findById(userId);
         if(user == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
+        log.info("Um post foi criado pelo usuário: " + user.getName());
 
         Post post = new Post();
         post.setText(request.getText());
@@ -49,7 +55,8 @@ public class PostResource {
 
     @GET
     public Response listPost( @PathParam("userId") Long userId ){
-        System.out.println("Método listPost foi acionado");
+
+        log.info("Método listPost foi acionado");
 
         User user = userRepository.findById(userId);
         if (user == null){

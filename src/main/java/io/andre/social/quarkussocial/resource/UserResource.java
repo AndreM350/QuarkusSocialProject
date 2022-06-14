@@ -5,6 +5,7 @@ import io.andre.social.quarkussocial.domain.repository.UserRepository;
 import io.andre.social.quarkussocial.domain.model.dto.CreateUserRequest;
 import io.andre.social.quarkussocial.domain.model.dto.ResponseError;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Path("/users")
+@Tag(name = "Users" , description = "MS de Cadastro de Usuários")
 @Consumes(MediaType.APPLICATION_JSON)
 //Informa que essa aplicação consome objetos do tipo JSON > isso se aplica a todos os métodos dessa classe
 @Produces(MediaType.APPLICATION_JSON) //Informa que a respostas retornam JSON's
@@ -34,6 +36,8 @@ public class UserResource {
     @POST
     @Transactional //anotação necessária para ações que fazem alterações no DB e não somente leitura
     public Response createUser(CreateUserRequest userRequest) {
+
+        log.info("Um usuário foi criado");
 
         Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(userRequest);
         if (!violations.isEmpty()) {
@@ -72,6 +76,8 @@ public class UserResource {
     @Path("{id}")
     public Response deleteUser(@PathParam("id") Long id) {
 
+        log.info("Usuário de id: " + id + " foi deletado");
+
         var user = userRepository.findById(id);
         if (user != null) {
             userRepository.delete(user);
@@ -87,6 +93,8 @@ public class UserResource {
     as alterações serão comitadas no banco de dados */
     @Path("{id}")
     public Response updateUser(@PathParam("id") Long id, CreateUserRequest userData) {
+
+        log.info("Usuário de id: " + id + " foi atualizado");
 
         User user = userRepository.findById(id);
 

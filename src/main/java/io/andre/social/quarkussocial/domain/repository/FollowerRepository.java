@@ -14,16 +14,25 @@ import java.util.Optional;
 @ApplicationScoped
 public class FollowerRepository implements PanacheRepository<Follower> {
 
-    public boolean follows (User follower, User user){
+    public boolean follows(User follower, User user) {
         var params = Parameters.with("follower", follower).and("user", user).map();
         var query = find("follower = :follower and user = :user ", params);
         var result = query.firstResultOptional();
         return result.isPresent(); //se achar retorna verdadeiro
     }
 
-    public List<Follower> findByUser(Long userId){
+    public List<Follower> findByUser(Long userId) {
         PanacheQuery<Follower> query = find("user.id", userId);
         return query.list();
+    }
+
+    public void deleteByFollowerAndUser(Long followerId, Long userId) {
+        var params = Parameters
+                .with("userId", userId)
+                .and("followerId", followerId)
+                .map();
+
+        delete("follower.id =:followerId and user.id =: userId", params);
     }
 
 }

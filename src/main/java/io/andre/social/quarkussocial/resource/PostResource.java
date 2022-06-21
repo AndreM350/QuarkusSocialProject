@@ -2,6 +2,7 @@ package io.andre.social.quarkussocial.resource;
 
 import io.andre.social.quarkussocial.domain.model.Post;
 import io.andre.social.quarkussocial.domain.model.User;
+import io.andre.social.quarkussocial.domain.repository.FollowerRepository;
 import io.andre.social.quarkussocial.domain.repository.PostRepository;
 import io.andre.social.quarkussocial.domain.repository.UserRepository;
 import io.andre.social.quarkussocial.domain.model.dto.CreatePostRequest;
@@ -31,14 +32,16 @@ public class PostResource {
     @Inject
     PostRepository postRepository;
 
+    @Inject
+    FollowerRepository followerRepository;
+
     @POST
     @Transactional
-    public Response savePost(@PathParam("userId") Long userId, CreatePostRequest request){
-
+    public Response savePost(@PathParam("userId") Long userId, CreatePostRequest request) {
 
 
         User user = userRepository.findById(userId);
-        if(user == null){
+        if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -54,14 +57,31 @@ public class PostResource {
 
 
     @GET
-    public Response listPost( @PathParam("userId") Long userId ){
+    public Response listPost(@PathParam("userId") Long userId,
+                             @HeaderParam("followerId") Long followerId) {
 
         log.info("Método listPost foi acionado");
 
         User user = userRepository.findById(userId);
-        if (user == null){
+        if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
+        if (followerId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Você esqueceu do header").build();
+        }
+
+        User follower = userRepository.findById(followerId);
+
+        if (follower == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Seguidor não existe").build();
+        }
+        boolean follows = followerRepository.follows(follower, user);
+        if (!follows) {
+            return Response.status(Response.Status.FORBIDDEN).entity("Você não pode visualizar estes posts pois não segue o usuário").build();
+        }
+
+
         /*query dinâmica sendo o "user" = atributo da entidade e o objeto user seria um this.user(pesquisa DESSE usuário */
         var thisUserPosts = postRepository.find("user", Sort.by("dateTime", Sort.Direction.Descending), user);
         var list = thisUserPosts.list();
